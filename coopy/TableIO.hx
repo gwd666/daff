@@ -161,7 +161,7 @@ class TableIO {
      */
     public function isTty() : Bool {
 #if python
-        if (python.Syntax.pythonCode("__import__('sys').stdout.isatty()")) return true;
+        if (python.Syntax.code("__import__('sys').stdout.isatty()")) return true;
 #end
 #if js
         return true;
@@ -180,13 +180,25 @@ class TableIO {
      */
     public function openSqliteDatabase(path: String) : SqlDatabase {
 #if python
-        return (python.Syntax.pythonCode("SqliteDatabase(sqlite3.connect(path),path)"));
+        return (python.Syntax.code("SqliteDatabase(path,path)"));
 #end
         return null;
     }
 
     public function sendToBrowser(html: String) : Void {
+#if python
+        // Python implementation of sendToBrowser is simpler than JS version -
+        // we don't try to clean up the temporary file immediately, but rely
+        // on the OS to clean it up in its own good time (typically on reboot).
+        // TODO: replicate JS version in env/js/util.js that avoids need for
+        // temporary file.
+        var f = python.Syntax.code("__import__('tempfile').NamedTemporaryFile('wb', delete=False, suffix='.html')");
+        python.Syntax.code("f.write(html.encode('utf-8', 'strict'))");
+        python.Syntax.code("f.close()");
+        python.Syntax.code("__import__('webbrowser').open('file://' + f.name)");
+#else
         trace("do not know how to send to browser in this language");
+#end
     }
 }
 
