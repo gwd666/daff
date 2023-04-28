@@ -17,7 +17,7 @@ class Coopy {
      * Library version.
      *
      */
-    static public var VERSION = "1.3.46";
+    static public var VERSION = "1.3.48";
 
     private var format_preference : String;
     private var delim_preference : String;
@@ -1002,8 +1002,8 @@ class Coopy {
                     io.writeStderr("     --context NUM: show NUM rows of context (0=none)\n");
                     io.writeStderr("     --context-columns NUM: show NUM columns of context (0=none)\n");
                     io.writeStderr("     --fail-if-diff: return status is 0 if equal, 1 if different, 2 if problem\n");
-                    io.writeStderr("     --id:          specify column to use as primary key (repeat for multi-column key)\n");
-                    io.writeStderr("     --ignore:      specify column to ignore completely (can repeat)\n");
+                    io.writeStderr("     --id:          specify column name to use as primary key (repeat for multi-column key)\n");
+                    io.writeStderr("     --ignore:      specify column name to ignore completely (can repeat)\n");
                     io.writeStderr("     --index:       include row/columns numbers from original tables\n");
                     io.writeStderr("     --input-format [csv|tsv|ssv|psv|json|sqlite]: set format to expect for input\n");
                     io.writeStderr("     --eol [crlf|lf|cr|auto]: separator between rows of csv output.\n");
@@ -1166,16 +1166,14 @@ class Coopy {
      * It is a thin wrapper around the `coopyhx` method.
      *
      */
-    public static function main() : Int {
+    public static function main() : Void {
 #if coopyhx_util
     var io = new TableIO();
     var coopy = new Coopy();
     var ret = coopy.coopyhx(io);
     if (ret!=0) Sys.exit(ret);
-    return ret;
 #else
     // do nothing
-    return 0;
 #end
     }
 

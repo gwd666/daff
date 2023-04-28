@@ -1,6 +1,6 @@
 {
   "name": "daff",
-  "version": "1.3.46",
+  "version": "1.3.48",
   "description": "Diff and patch tables",
   "url": "https://github.com/paulfitz/daff",
   "devDependencies": {
@@ -25,10 +25,11 @@
     "url": "http://paulfitz.github.io/"
   },
   "optionalDependencies": {
-    "sqlite3": "^4.0.0",
-    "fibers": "^3.0.0"
+    "fibers": "^5.0.0",
+    "sqlite3": "^4.0.0"
   },
   "scripts": {
+    "prepare": "make js",
     "prepublishOnly": "make js",
     "test": "make test"
   },
